@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block 'main' %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y" style="padding-bottom: 32vh;">
+
+<!-- ============================ COMPONENT REGISTER   ================================= -->
+	<div class="card mx-auto" style="max-width:520px; margin-top:40px; ">
+      <article class="card-body">
+		<header class="mb-4 text-center"><h4 class="card-title">Mobile Verification</h4></header>
+		<form method="POST" action="mobile_verf">
+			{% csrf_token %}
+				<div class="form-row">
+					<div class="col form-group">
+						<label>Mobile no. </label>
+					  	<input type="text" class="form-control" placeholder="enter your mobile no">
+					</div> <!-- form-group end.// -->
+				</div> <!-- form-row end.// -->
+			    <div class="form-group">
+			        <button type="submit" class="btn btn-primary btn-block">Generate OTP</button>
+			    </div> <!-- form-group// -->      
+			        
+			</form>
+		</article><!-- card-body.// -->
+    </div> <!-- card .// -->
+    <br><br>
+<!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock 'main' %}

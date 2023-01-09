@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block 'main' %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y" style="padding-bottom: 32vh;">
+
+	<!-- ============================ COMPONENT REGISTER   ================================= -->
+	<div class="card mx-auto" style="max-width:520px; margin-top:40px; ">
+		<article class="card-body">
+			<header class="mb-4 text-center">
+				<h4 class="card-title">Email Verification</h4>
+			</header>
+			<form method="POST">
+				{% csrf_token %}
+				{% if messages %}
+					{% for message in messages %}
+					<div class="alert alert-info">
+						{{ message }}
+					</div>
+						{% endfor %}
+				{% endif %}
+
+				<div class="form-row">
+					<div class="col form-group">
+						<label>Username</label>
+						<input type="text" name="username" class="form-control" placeholder="enter your username">
+					</div> <!-- form-group end.// -->
+				</div> <!-- form-row end.// -->
+				<div class="form-row">
+					<div class="col form-group">
+						<label>Email Id</label>
+						<input type="email" name="email" class="form-control" placeholder="enter your email id">
+					</div> <!-- form-group end.// -->
+				</div> <!-- form-row end.// -->
+				<div class="form-row">
+					<div class="col form-group">
+						<label>Password</label>
+						<input type="password" name="password" class="form-control" placeholder="enter your password">
+						<a href="" style="float:right; font-size:12px; ">Forgot Password?</a>
+					</div> <!-- form-group end.// -->
+				</div> <!-- form-row end.// -->
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-block">Generate OTP</button>
+				</div> <!-- form-group// -->
+
+			</form>
+		</article><!-- card-body.// -->
+	</div> <!-- card .// -->
+	<br><br>
+	<!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock 'main' %}
