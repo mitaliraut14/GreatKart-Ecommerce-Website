@@ -6,6 +6,7 @@ from .models import *
 import uuid
 from django.conf import settings
 from django.core.mail import send_mail
+import random
 
 
 # Create your views here.
@@ -65,12 +66,12 @@ def email_gen_otp(request):
             user_obj = User(username = username, email  = email)
             user_obj.set_password(password)
             user_obj.save()
-            auth_token = str(uuid.uuid4())
+            auth_token = random.randrange(1000,9999)
             profile_obj = Profile.objects.create(user = user_obj, auth_token = auth_token)
             profile_obj.save()
             send_mail_after_registation(email, auth_token)
 
-            return redirect('/token')
+            return redirect('/email_verf')
 
         except Exception as e:
             print(e)
@@ -102,7 +103,12 @@ def error_page(request):
 
 def send_mail_after_registation(email,token):
     subject = 'Your account needs to be verified'
-    message = f'Hi paste the link to verify your accuont http://127.0.0.1:8000/verify/{token}'
+    # message = f'Hi paste the link to verify your accuont http://127.0.0.1:8000/email_verf/{token}'
+    # otp=random.randrange(1000,9999)
+    #to insert otp in database
+
+    message=f'Enter {token} to verify your email'
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [email]
     send_mail(subject, message, email_from, recipient_list) 
+    
