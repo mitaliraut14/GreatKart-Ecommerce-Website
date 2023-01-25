@@ -142,9 +142,19 @@ def place_order(request,rid):
     return render(request,'place_order.html',content)
 
 def product_detail(request,rid):
-    p=Product.objects.filter(id=rid)
+    userid=request.user.id
+    p=Product.objects.values().filter(id=rid)
     content={}
     content['data']=p
+    # print(request.method)
+    if request.method == "POST":
+        print("logged in",userid)
+      
+        c=cart.objects.create(uid = int(userid), pid = p[0]['id'])
+        c.save()
+       
+        print(c.pid)
+
     return render(request,'product_detail.html',content)
 
 def add_to_cart(request,rid):
@@ -162,7 +172,7 @@ def add_to_cart(request,rid):
     # request.session['cart'] = cart
     print(content)
 
-    return render(request,'product_detail.html',content)
+    return render(request,'add_to_cart.html')
 
 def check_out(request,rrid):
     p=User.objects.filter(id=rrid)
@@ -266,6 +276,6 @@ def getsession(request):
     return render(request,'getsession.html',data)
 
 def remove(request,rid):
-    p=Product.objects.get(id=rid)#select * from blogapp_post where id=rid
+    p=cart.objects.get(id=rid)#select * from blogapp_post where id=rid
     p.delete()
     return redirect('/')
