@@ -31,7 +31,8 @@ class verf_mobile(models.Model):
 
 class verf_email(models.Model):
 
-   em_otp=models.IntegerField()
+    email=models.CharField(max_length=100)
+    em_otp=models.IntegerField()
 
 class Profile(models.Model):
     user=models.OneToOneField(User, on_delete=models.CASCADE)

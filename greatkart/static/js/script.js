@@ -1,5 +1,14 @@
 // some scripts
 
+// let placeOrderBtn = document.getElementById("placeOrderBtn");
+// let formBtn = document.getElementById("formBtn");
+
+// placeOrderBtn.addEventListener('click',()=>{
+//     formBtn.click();
+// });
+
+
+
 // jquery ready start
 $(document).ready(function() {
 	// jQuery code

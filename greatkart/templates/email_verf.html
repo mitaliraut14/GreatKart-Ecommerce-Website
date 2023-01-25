@@ -4,6 +4,8 @@
 
 {% block 'main' %}
 
+
+<!-- {{email}} -->
 <!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-content padding-y" style="padding-bottom: 32vh;">
 
@@ -13,16 +15,16 @@
             <header class="mb-4 text-center">
                 <h4 class="card-title">OTP Verification</h4>
             </header>
-            <form method="POST">
+            <form method="POST" action="/email_verf">
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="col form-group">
                         <label>Enter OTP</label>
-                        <input type="text" class="form-control" placeholder="enter otp">
+                        <input type="text" name="eotp" class="form-control" placeholder="enter otp">
                     </div> <!-- form-group end.// -->
                 </div> <!-- form-row end.// -->
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">Verify Mobile No</button>
+                    <button type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">Verify Mobile No</button>
                 </div> <!-- form-group// -->
 
             </form>

@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'greatkart.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'greatkart',
+        'NAME': 'db_greatkart',
         'HOST': 'localhost',
         'USER': 'root',
         'PASSWORD': '',
@@ -138,3 +138,9 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'mitalir546@gmail.com'
 EMAIL_HOST_PASSWORD = 'yxnzlfirtswbpquy'
+
+
+RAZORPAY_API_KEY = ''
+RAZORPAY_API_SECRET_KEY = ''
+
+
