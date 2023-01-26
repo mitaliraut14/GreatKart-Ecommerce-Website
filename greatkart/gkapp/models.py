@@ -14,7 +14,7 @@ class Product(models.Model):
 class cart(models.Model):
 
     uid=models.IntegerField()
-    pid=models.IntegerField()
+    pid=models.ForeignKey(Product, on_delete=models.CASCADE)
 
 class order(models.Model):
 

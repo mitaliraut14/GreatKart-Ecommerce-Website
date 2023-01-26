@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate,login
 from django.http import HttpResponse
 import datetime 
 import razorpay
+from greatkart.settings import RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY
 
 
 # Create your views here.
@@ -131,6 +132,7 @@ def place_order(request,rid):
     
         # amount=request.POST.get(product[0]['price'])
         pin=request.POST.get('pincode')
+        print(pin)
         # hou=request.POST.get('house')
         # build=request.POST.get('building')
         stre=request.POST.get('street')
@@ -157,28 +159,44 @@ def product_detail(request,rid):
 
     return render(request,'product_detail.html',content)
 
-def add_to_cart(request,rid):
-    userid=request.user.id
-    print("logged in",userid)
-    # c = cart.object.POST(uid= userid)   
-    # cart = request.session.get('cart', {})
-    product = Product.objects.values().filter(id=rid)
-    content={}
-    content['data'] = product
-    print(product[0])
-    c=cart.objects.create(uid = int(userid), pid = product[0]['id'])
-    c.save()
-    # c = cart.objects.create(pid = product, uid = userid)
-    # request.session['cart'] = cart
-    print(content)
+# def add_to_cart(request,rid):
+#     userid=request.user.id
+#     print("logged in",userid)
+#     # c = cart.object.POST(uid= userid)   
+#     # cart = request.session.get('cart', {})
+#     product = Product.objects.values().filter(id=rid)
+#     content={}
+#     content['data'] = product
+#     print(product[0])
+#     c=cart.objects.create(uid = int(userid), pid = product[0]['id'])
+#     c.save()
+#     # c = cart.objects.create(pid = product, uid = userid)
+#     # request.session['cart'] = cart
+#     print(content)
 
-    return render(request,'add_to_cart.html')
+#     return render(request,'add_to_cart.html')
 
 def check_out(request,rrid):
-    p=User.objects.filter(id=rrid)
-    content={}
-    content['data']=p
-    return render(request,'check_out.html',content)
+    # if request.method=='POST':
+        # print(rrid)
+        #p=cart.objects.filter(uid=rrid)
+        p=cart.objects.all()
+        print(p)
+        s=0
+        product_id=str(p[0].pid.id)
+        for i in range(1,len(p)):
+            product_id=product_id+','+str(p[i].pid.id)
+        
+        print(product_id)
+        for x in p:
+            s=s+x.pid.price
+           
+    
+        content={}
+        content['data']=p
+        content['tot']=s
+        content['prod_id']=product_id
+        return render(request,'check_out.html',content)
 
 
     # p=Product.objects.filter(id=rid)
@@ -279,3 +297,14 @@ def remove(request,rid):
     p=cart.objects.get(id=rid)#select * from blogapp_post where id=rid
     p.delete()
     return redirect('/')
+
+client = razorpay.Client(auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY))
+def pay(request):
+    order_amount = 50000
+    order_currency= 'INR'
+    order_receipt= 'order_rcptid_11'
+    note = {'Shipping address' : 'Pune, Maharashtra'}
+    payment_order = client.order.create(dict(amount=order_amount, currency=order_currency, receipt=order_receipt, notes=note, payment_capture=1))
+    payment_order_id = payment_order['id']
+    content={ 'amount' : 500 , 'api_key' : RAZORPAY_API_KEY, 'order_id': payment_order_id }
+    return render(request,'pay.html',content)
