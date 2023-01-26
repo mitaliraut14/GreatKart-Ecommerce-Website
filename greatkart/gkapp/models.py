@@ -18,12 +18,18 @@ class cart(models.Model):
 
 class order(models.Model):
 
-    pid=models.IntegerField()
+    pid=models.CharField(max_length=100)
     uid=models.IntegerField()
     amount=models.IntegerField()
     placed_on=models.DateTimeField()
     pincode=models.IntegerField()
     address=models.CharField(max_length=500)
+    
+
+class orderpayment(models.Model):
+    razor_pay_order_id=models.CharField(max_length=100 , null=True , blank = True)
+    razor_pay_payment_id=models.CharField(max_length=100 , null=True , blank = True)
+    razor_pay_payment_signature=models.CharField(max_length=100 , null=True , blank = True)
 
 class verf_mobile(models.Model):
 

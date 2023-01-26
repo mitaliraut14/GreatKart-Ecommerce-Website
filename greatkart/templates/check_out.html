@@ -46,7 +46,7 @@
 								</td>
 								<td class="text-right">
 								<td>
-									<a href="/remove"><button class="btn btn-danger">Remove</button></a>
+									<a href="/remove/{{x.id}}"><button class="btn btn-danger">Remove</button></a>
 								</td>
 							</tr>
 							{% endfor %}
@@ -65,7 +65,7 @@
 			<div class="card-body">
 				<h4 class="card-title mb-4">Delivery info</h4>
 			
-				<form method="POST" action="/place_order/{{prod_id}}">
+				<form method="POST" action="/place_order/{{prod_id}}/{{tot}}">
 					{% csrf_token %}
 
 					<div class="row">

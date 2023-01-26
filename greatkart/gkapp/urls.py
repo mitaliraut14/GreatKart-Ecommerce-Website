@@ -8,7 +8,7 @@ urlpatterns = [
      path('register',views.register),
      path('search_result',views.search_result),
      path('order_complete',views.order_complete),
-     path('place_order/<str:rid>',views.place_order),
+     path('place_order/<str:rid>/<amt>',views.place_order),
      path('product_detail/<rid>',views.product_detail),
      # path('add_to_cart/<rid>',views.add_to_cart),
      path('check_out/<rrid>',views.check_out),
@@ -23,7 +23,7 @@ urlpatterns = [
      path('token',views.etoken_send),
      path('setsession',views.setsession),
      path('getsession',views.getsession),
-     path('pay',views.pay),
+     # path('pay',views.pay),
 
      
 ]

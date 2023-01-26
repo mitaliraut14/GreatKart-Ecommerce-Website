@@ -140,7 +140,7 @@ EMAIL_HOST_USER = 'mitalir546@gmail.com'
 EMAIL_HOST_PASSWORD = 'yxnzlfirtswbpquy'
 
 
-RAZORPAY_API_KEY = 'rzp_test_UD9lcG1ivIyoFB'
-RAZORPAY_API_SECRET_KEY = 'nNqOTOjs6nEtwRlJquNUWycv'
+KEY = 'rzp_test_n1omYpjkEnJ02R'
+SECRET = 'TMOKLualtawj7DMvOfAIQdAk'
 
 

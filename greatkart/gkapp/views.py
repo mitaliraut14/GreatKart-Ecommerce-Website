@@ -10,7 +10,8 @@ from django.contrib.auth import authenticate,login
 from django.http import HttpResponse
 import datetime 
 import razorpay
-from greatkart.settings import RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY
+
+
 
 
 # Create your views here.
@@ -120,16 +121,20 @@ def search_result(request):
 def order_complete(request):
     return render(request,'order_complete.html')
 
-def place_order(request,rid):
+def place_order(request,rid,amt):
     if request.method=="POST":
         userid=request.user.id
-        product = Product.objects.values().filter(id=rid)
-        content={}
-        content['data'] = product[0]
-        print(product[0])
+        #print("value is:",rid)
+        # ltemp=rid.split(',')
+        # lpid=[]
+        # for x in ltemp:
+        #      lpid.append(int(x))
+        # product = Product.objects.values().filter(id=rid)
+        # content={}
+        # content['data'] = product[0]
+        # print(product[0])
         print("logged in",userid)
         # print(request.method)
-    
         # amount=request.POST.get(product[0]['price'])
         pin=request.POST.get('pincode')
         print(pin)
@@ -138,21 +143,41 @@ def place_order(request,rid):
         stre=request.POST.get('street')
         # state=request.POST.get('state')
         # add= hou + build + stre + state
-        o=order.objects.create(uid = int(userid), pid = product[0]['id'], amount = product[0]['price'], placed_on = datetime.datetime.now(), pincode = pin, address = stre)
+        o=order.objects.create(uid = int(userid), pid = rid, amount = amt, placed_on = datetime.datetime.now(), pincode = pin, address = stre)
         o.save()
         print("what:", o)
-    return render(request,'place_order.html',content)
+        # return render(request,'place_order.html')
+
+    client = razorpay.Client(auth = (settings.KEY , settings.SECRET))
+    order_amount=int(amt)* 100
+    payment = client.order.create({'amount' : order_amount, 'currency' : 'INR' , 'payment_capture' : 1})
+    a=orderpayment.objects.create(razor_pay_order_id=payment['id'])
+    a.save()
+    print('***********')        
+    print(payment)        
+    print('***********')
+        
+    context = {'payment' : payment } 
+    # elif request.method == 'GET':
+    #     content={}
+    #     content['amount']=amt
+    return render(request,'place_order.html',context)
+
+    
+
 
 def product_detail(request,rid):
     userid=request.user.id
-    p=Product.objects.values().filter(id=rid)
+    p=Product.objects.filter(id=rid)
     content={}
     content['data']=p
     # print(request.method)
     if request.method == "POST":
         print("logged in",userid)
-      
-        c=cart.objects.create(uid = int(userid), pid = p[0]['id'])
+        product_id=p[0].id
+        c=cart.objects.create(uid = int(userid), pid =p[0])
+        # c=cart.objects.create(uid = int(userid), pid = rid)
+
         c.save()
        
         print(c.pid)
@@ -298,13 +323,13 @@ def remove(request,rid):
     p.delete()
     return redirect('/')
 
-client = razorpay.Client(auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY))
-def pay(request):
-    order_amount = 50000
-    order_currency= 'INR'
-    order_receipt= 'order_rcptid_11'
-    note = {'Shipping address' : 'Pune, Maharashtra'}
-    payment_order = client.order.create(dict(amount=order_amount, currency=order_currency, receipt=order_receipt, notes=note, payment_capture=1))
-    payment_order_id = payment_order['id']
-    content={ 'amount' : 500 , 'api_key' : RAZORPAY_API_KEY, 'order_id': payment_order_id }
-    return render(request,'pay.html',content)
+# client = razorpay.Client(auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY))
+# def pay(request):
+#     order_amount = 50000
+#     order_currency= 'INR'
+#     order_receipt= 'order_rcptid_11'
+#     note = {'Shipping address' : 'Pune, Maharashtra'}
+#     payment_order = client.order.create(dict(amount=order_amount, currency=order_currency, receipt=order_receipt, notes=note, payment_capture=1))
+#     payment_order_id = payment_order['id']
+#     content={ 'amount' : 500 , 'api_key' : RAZORPAY_API_KEY, 'order_id': payment_order_id }
+#     return render(request,'pay.html',content)
