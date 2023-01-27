@@ -23,6 +23,7 @@ urlpatterns = [
      path('token',views.etoken_send),
      path('setsession',views.setsession),
      path('getsession',views.getsession),
+     path('searchbar',views.searchbar),
      # path('pay',views.pay),
 
      

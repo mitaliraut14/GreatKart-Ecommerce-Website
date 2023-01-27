@@ -19,7 +19,7 @@ import razorpay
 def index(request):
     # if request.session.get('user_id'):
     #     userid=request.session['user_id']
-        p=Product.objects.filter(status=1)
+        p=Product.objects.all()
         content={}
         content['data']=p
         return render(request,'index.html',content)
@@ -323,13 +323,8 @@ def remove(request,rid):
     p.delete()
     return redirect('/')
 
-# client = razorpay.Client(auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY))
-# def pay(request):
-#     order_amount = 50000
-#     order_currency= 'INR'
-#     order_receipt= 'order_rcptid_11'
-#     note = {'Shipping address' : 'Pune, Maharashtra'}
-#     payment_order = client.order.create(dict(amount=order_amount, currency=order_currency, receipt=order_receipt, notes=note, payment_capture=1))
-#     payment_order_id = payment_order['id']
-#     content={ 'amount' : 500 , 'api_key' : RAZORPAY_API_KEY, 'order_id': payment_order_id }
-#     return render(request,'pay.html',content)
+def searchbar(request):
+    if request.method=="GET":
+        search = request.GET.get('search')
+        p=Product.objects.filter(product_name=search)
+        return render(request,'searchbar.html',{'p' : p})
